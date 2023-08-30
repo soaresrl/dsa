@@ -57,8 +57,6 @@ func Free(lst **Node) {
 }
 
 func (lst *Node) Remove(value int) *Node {
-	var slow *Node
-
 	if lst == nil {
 		return lst
 	}
@@ -99,8 +97,8 @@ func (lst *Node) Remove(value int) *Node {
 
 func (lst *Node) RemoveRec(value int) *Node {
 	if !lst.IsEmpty() {
-		if lst.data == value {
-			lst = lst.next
+		if lst.next.data == value {
+			lst.next = lst.next.next
 		} else {
 			lst.next = lst.next.RemoveRec(value)
 		}
