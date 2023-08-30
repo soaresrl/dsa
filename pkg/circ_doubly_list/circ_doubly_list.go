@@ -14,27 +14,6 @@ func NewList() *Node {
 	return nil
 }
 
-func AreEqual(lst1 *Node, lst2 *Node) bool {
-	a, b := lst1, lst2
-	for ; a != nil && b != nil; a, b = a.next, b.next {
-		if a.data != b.data {
-			return false
-		}
-	}
-
-	return a == b
-}
-
-func AreEqualRec(lst1 *Node, lst2 *Node) bool {
-	if lst1 == nil && lst2 == nil {
-		return true
-	} else if lst1 == nil || lst2 == nil {
-		return false
-	} else {
-		return (lst1.data == lst2.data) && AreEqualRec(lst1.next, lst2.next)
-	}
-}
-
 func (lst *Node) Insert(value int) *Node {
 	node := &Node{data: value}
 

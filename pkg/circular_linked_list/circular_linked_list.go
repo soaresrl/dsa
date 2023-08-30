@@ -37,10 +37,17 @@ func (lst *Node) IsEmpty() bool {
 }
 
 func (lst *Node) Find(value int) *Node {
-	for p := lst; p.next != lst; p = p.next {
+	p := lst
+
+	for ; p.next != lst; p = p.next {
 		if p.data == value {
 			return p
 		}
+	}
+
+	// check if it's the last element
+	if p.data == value {
+		return p
 	}
 
 	return nil
@@ -95,12 +102,36 @@ func (lst *Node) Remove(value int) *Node {
 	return lst
 }
 
-func (lst *Node) RemoveRec(value int) *Node {
+func (lst *Node) RemoveRec(value int, sentinel *Node) *Node {
 	if !lst.IsEmpty() {
 		if lst.next.data == value {
-			lst.next = lst.next.next
+			// lst is the last element and we want
+			// to remove the first element
+			if lst.next == sentinel {
+				// p is the first element (to be removed)
+				p := lst.next
+
+				// the next of the last element
+				// now points to the second element
+				lst.next = p.next
+
+				// lst now points to the second element
+				lst = lst.next
+
+				p = nil
+			} else {
+				// p is the element to be removed
+				p := lst.next
+
+				// the next of the previous element
+				// should point to the next of the element to
+				// be removed
+				lst.next = p.next
+
+				p = nil
+			}
 		} else {
-			lst.next = lst.next.RemoveRec(value)
+			lst.next.RemoveRec(value, sentinel)
 		}
 	}
 
@@ -117,16 +148,13 @@ func (lst *Node) Print() {
 	fmt.Printf("end \n")
 }
 
-func (lst *Node) PrintRec() {
-	if lst != nil {
+func (lst *Node) PrintRec(sentinel *Node) {
+	// while the next element is not the first element
+	// we keep recursing
+	if lst.next != sentinel {
 		fmt.Printf("data = %d\n", lst.data)
-		lst.next.PrintRec()
-	}
-}
-
-func (lst *Node) PrintRecInv() {
-	if lst != nil {
-		lst.next.PrintRecInv()
-		fmt.Printf("data = %d\n", lst.data)
+		lst.next.PrintRec(sentinel)
+	} else { // if the next is the first element just print the last
+		fmt.Printf("data= %d\n", lst.data)
 	}
 }

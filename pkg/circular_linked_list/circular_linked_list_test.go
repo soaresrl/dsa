@@ -31,16 +31,33 @@ func TestRemove(t *testing.T) {
 
 	lst = lst.Insert(5)
 	lst = lst.Insert(10)
+	lst = lst.Insert(4)
+	lst = lst.Insert(29)
+	lst = lst.Insert(30)
 	lst = lst.Insert(2)
 
-	lst = lst.Remove(10)
+	lst.Print()
 
-	if lst.data != 2 {
-		t.Errorf("Remove test failed expected head = %d, got %d", 2, lst.data)
+	lst = lst.Remove(10)
+	lst = lst.Remove(2)
+	lst = lst.Remove(5)
+
+	lst.Print()
+
+	if lst.data != 30 {
+		t.Errorf("Remove test failed expected head = %d, got %d", 30, lst.data)
 	}
 
-	if lst.next.data != 5 {
-		t.Errorf("Remove test failed expected next = %d, got %d", 5, lst.next.data)
+	if lst.next.data != 29 {
+		t.Errorf("Remove test failed expected next = %d, got %d", 29, lst.next.data)
+	}
+
+	if lst.next.next.data != 4 {
+		t.Errorf("Remove test failed expected next.next = %d, got %d", 4, lst.next.next.data)
+	}
+
+	if lst.next.next.next.data != 30 {
+		t.Errorf("Remove test failed expected next.next.next (start) = %d, got %d", 30, lst.next.next.next.data)
 	}
 }
 
@@ -49,16 +66,29 @@ func TestRemoveRec(t *testing.T) {
 
 	lst = lst.Insert(5)
 	lst = lst.Insert(10)
+	lst = lst.Insert(4)
+	lst = lst.Insert(29)
+	lst = lst.Insert(30)
 	lst = lst.Insert(2)
 
-	lst = lst.RemoveRec(10)
+	lst = lst.RemoveRec(10, lst)
+	lst = lst.RemoveRec(2, lst)
+	lst = lst.RemoveRec(5, lst)
 
-	if lst.data != 2 {
-		t.Errorf("Remove test failed expected head = %d, got %d", 2, lst.data)
+	if lst.data != 30 {
+		t.Errorf("Remove test failed expected head = %d, got %d", 30, lst.data)
 	}
 
-	if lst.next.data != 5 {
-		t.Errorf("Remove test failed expected next = %d, got %d", 5, lst.next.data)
+	if lst.next.data != 29 {
+		t.Errorf("Remove test failed expected next = %d, got %d", 29, lst.next.data)
+	}
+
+	if lst.next.next.data != 4 {
+		t.Errorf("Remove test failed expected next.next = %d, got %d", 4, lst.next.next.data)
+	}
+
+	if lst.next.next.next.data != 30 {
+		t.Errorf("Remove test failed expected next.next.next (start) = %d, got %d", 30, lst.next.next.next.data)
 	}
 }
 
