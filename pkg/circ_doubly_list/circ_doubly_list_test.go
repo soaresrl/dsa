@@ -1,4 +1,4 @@
-package ord_doubly_list
+package circ_doubly_list
 
 import (
 	"testing"
@@ -20,16 +20,16 @@ func TestAdd(t *testing.T) {
 	lst = lst.Insert(10)
 	lst = lst.Insert(6)
 
-	if lst.data != 6 {
-		t.Errorf("Add test failed got %d, wanted %d", lst.data, 6)
+	if lst.Data != 6 {
+		t.Errorf("Add test failed got %d, wanted %d", lst.Data, 6)
 	}
 
-	if lst.next.data != 10 {
-		t.Errorf("Add test failed got (next) %d, wanted %d", lst.next.data, 10)
+	if lst.Next.Data != 10 {
+		t.Errorf("Add test failed got (Next) %d, wanted %d", lst.Next.Data, 10)
 	}
 
-	if lst.next.next.data != 5 {
-		t.Errorf("Add test failed got (next) %d, wanted %d", lst.next.data, 5)
+	if lst.Next.Next.Data != 5 {
+		t.Errorf("Add test failed got (Next) %d, wanted %d", lst.Next.Data, 5)
 	}
 
 }
@@ -50,28 +50,28 @@ func TestRemove(t *testing.T) {
 
 	lst.Print()
 
-	if lst.data != 30 {
-		t.Errorf("Remove test failed expected head = %d, got %d", 30, lst.data)
+	if lst.Data != 30 {
+		t.Errorf("Remove test failed expected head = %d, got %d", 30, lst.Data)
 	}
 
-	if lst.previous.data != 4 {
-		t.Errorf("Remove test failed expected previous = %d, got %d.\n", 4, lst.previous.data)
+	if lst.Previous.Data != 4 {
+		t.Errorf("Remove test failed expected Previous = %d, got %d.\n", 4, lst.Previous.Data)
 	}
 
-	if lst.next.data != 29 {
-		t.Errorf("Remove test failed expected next = %d, got %d", 29, lst.next.data)
+	if lst.Next.Data != 29 {
+		t.Errorf("Remove test failed expected Next = %d, got %d", 29, lst.Next.Data)
 	}
 
-	if lst.next.previous.data != 30 {
-		t.Errorf("Remove test failed expected next previous = %d, got %d", 30, lst.next.previous.data)
+	if lst.Next.Previous.Data != 30 {
+		t.Errorf("Remove test failed expected Next Previous = %d, got %d", 30, lst.Next.Previous.Data)
 	}
 
-	if lst.next.next.data != 4 {
-		t.Errorf("Remove test failed expected next next = %d, got %d", 4, lst.next.next.data)
+	if lst.Next.Next.Data != 4 {
+		t.Errorf("Remove test failed expected Next Next = %d, got %d", 4, lst.Next.Next.Data)
 	}
 
-	if lst.next.next.next.data != 30 {
-		t.Errorf("Remove test failed expected next.next.next (last) = %d, got %d", 30, lst.next.next.next.data)
+	if lst.Next.Next.Next.Data != 30 {
+		t.Errorf("Remove test failed expected Next.Next.Next (last) = %d, got %d", 30, lst.Next.Next.Next.Data)
 	}
 }
 
@@ -91,28 +91,28 @@ func TestRemoveRec(t *testing.T) {
 
 	lst.Print()
 
-	if lst.data != 30 {
-		t.Errorf("Remove test failed expected head = %d, got %d", 30, lst.data)
+	if lst.Data != 30 {
+		t.Errorf("Remove test failed expected head = %d, got %d", 30, lst.Data)
 	}
 
-	if lst.previous.data != 4 {
-		t.Errorf("Remove test failed expected previous = %d, got %d.\n", 4, lst.previous.data)
+	if lst.Previous.Data != 4 {
+		t.Errorf("Remove test failed expected Previous = %d, got %d.\n", 4, lst.Previous.Data)
 	}
 
-	if lst.next.data != 29 {
-		t.Errorf("Remove test failed expected next = %d, got %d", 29, lst.next.data)
+	if lst.Next.Data != 29 {
+		t.Errorf("Remove test failed expected Next = %d, got %d", 29, lst.Next.Data)
 	}
 
-	if lst.next.previous.data != 30 {
-		t.Errorf("Remove test failed expected next previous = %d, got %d", 30, lst.next.previous.data)
+	if lst.Next.Previous.Data != 30 {
+		t.Errorf("Remove test failed expected Next Previous = %d, got %d", 30, lst.Next.Previous.Data)
 	}
 
-	if lst.next.next.data != 4 {
-		t.Errorf("Remove test failed expected next next = %d, got %d", 4, lst.next.next.data)
+	if lst.Next.Next.Data != 4 {
+		t.Errorf("Remove test failed expected Next Next = %d, got %d", 4, lst.Next.Next.Data)
 	}
 
-	if lst.next.next.next.data != 30 {
-		t.Errorf("Remove test failed expected next.next.next (last) = %d, got %d", 30, lst.next.next.next.data)
+	if lst.Next.Next.Next.Data != 30 {
+		t.Errorf("Remove test failed expected Next.Next.Next (last) = %d, got %d", 30, lst.Next.Next.Next.Data)
 	}
 }
 
@@ -127,13 +127,13 @@ func TestFind(t *testing.T) {
 	node2 := lst.Find(40)
 	node3 := lst.Find(5)
 
-	if node1.data != 12 {
-		t.Errorf("Find test failed expected %d, got %d", 12, node1.data)
+	if node1.Data != 12 {
+		t.Errorf("Find test failed expected %d, got %d", 12, node1.Data)
 	}
-	if node2.data != 40 {
-		t.Errorf("Find test failed expected %d, got %d", 40, node2.data)
+	if node2.Data != 40 {
+		t.Errorf("Find test failed expected %d, got %d", 40, node2.Data)
 	}
-	if node3.data != 5 {
-		t.Errorf("Find test failed expected %d, got %d", 5, node3.data)
+	if node3.Data != 5 {
+		t.Errorf("Find test failed expected %d, got %d", 5, node3.Data)
 	}
 }
