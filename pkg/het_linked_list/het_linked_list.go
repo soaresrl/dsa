@@ -63,10 +63,14 @@ func Free(lst **Node) {
 		return
 	}
 
-	(*lst).data = nil
+	for p := *lst; p != nil; {
+		temp := p.next
 
-	Free(&(*lst).next)
-	(*lst).next = nil
+		p.next = nil
+
+		p = temp
+	}
+
 	*lst = nil
 }
 
@@ -81,6 +85,7 @@ func (lst *Node) Remove(account_number int) *Node {
 	if p == nil {
 		return lst
 	}
+
 	if slow == nil {
 		p.data = nil
 		lst = p.next

@@ -1,13 +1,13 @@
-package ord_doubly_list
+package circ_doubly_list
 
 import (
 	"fmt"
 )
 
 type Node struct {
-	data     int
-	next     *Node
-	previous *Node
+	Data     int
+	Next     *Node
+	Previous *Node
 }
 
 func NewList() *Node {
@@ -15,18 +15,18 @@ func NewList() *Node {
 }
 
 func (lst *Node) Insert(value int) *Node {
-	node := &Node{data: value}
+	node := &Node{Data: value}
 
 	if lst.IsEmpty() {
-		node.next = node
-		node.previous = node
+		node.Next = node
+		node.Previous = node
 	} else {
 
-		node.next = lst
-		node.previous = lst.previous
+		node.Next = lst
+		node.Previous = lst.Previous
 
-		lst.previous.next = node
-		lst.previous = node
+		lst.Previous.Next = node
+		lst.Previous = node
 	}
 
 	return node
@@ -39,14 +39,14 @@ func (lst *Node) IsEmpty() bool {
 func (lst *Node) Find(value int) *Node {
 	p := lst
 
-	for ; p.next != lst; p = p.next {
-		if p.data == value {
+	for ; p.Next != lst; p = p.Next {
+		if p.Data == value {
 			return p
 		}
 	}
 
 	// check last element
-	if p.data == value {
+	if p.Data == value {
 		return p
 	}
 
@@ -58,9 +58,28 @@ func Free(lst **Node) {
 		return
 	}
 
-	Free(&(*lst).next)
-	(*lst).next = nil
-	(*lst).previous = nil
+	if (*lst).Next == *lst {
+		(*lst).Next = nil
+		(*lst).Previous = nil
+
+		*lst = nil
+		return
+	}
+
+	p := *lst
+
+	for ; p.Next != *lst; p = p.Next {
+		temp := p.Next
+
+		p.Next = nil
+		p.Previous = nil
+
+		p = temp
+	}
+
+	p.Next = nil
+	p.Previous = nil
+
 	*lst = nil
 }
 
@@ -70,32 +89,35 @@ func (lst *Node) Remove(value int) *Node {
 	}
 
 	// check if is the first and only element
-	if lst.data == value && lst.next == lst {
+	if lst.Data == value && lst.Next == lst {
+		lst.Next = nil
+		lst.Previous = nil
+		
 		return nil
 	}
 
 	p := lst
 
 	// iterate until find the node or value not present
-	for ; p.next != lst && p.data != value; p = p.next {
+	for ; p.Next != lst && p.Data != value; p = p.Next {
 	}
 
 	// value not present case
-	if p.next == lst && p.data != value {
+	if p.Next == lst && p.Data != value {
 		return lst
 	}
 
 	// if it's the first element
 	if p == lst {
-		p.next.previous = p.previous
-		p.previous.next = p.next
+		p.Next.Previous = p.Previous
+		p.Previous.Next = p.Next
 
-		lst = p.next
+		lst = p.Next
 
 		p = nil
 	} else {
-		p.next.previous = p.previous
-		p.previous.next = p.next
+		p.Next.Previous = p.Previous
+		p.Previous.Next = p.Next
 
 		p = nil
 	}
@@ -105,18 +127,18 @@ func (lst *Node) Remove(value int) *Node {
 
 func (lst *Node) RemoveRec(value int, sentinel *Node) *Node {
 	if !lst.IsEmpty() {
-		if lst.data == value {
+		if lst.Data == value {
 			if lst == sentinel {
-				lst.next.previous = lst.previous
-				lst.previous.next = lst.next
+				lst.Next.Previous = lst.Previous
+				lst.Previous.Next = lst.Next
 
-				lst = lst.next
+				lst = lst.Next
 			} else {
-				lst.next.previous = lst.previous
-				lst.previous.next = lst.next
+				lst.Next.Previous = lst.Previous
+				lst.Previous.Next = lst.Next
 			}
 		} else {
-			lst.next.RemoveRec(value, sentinel)
+			lst.Next.RemoveRec(value, sentinel)
 		}
 	}
 
@@ -128,28 +150,28 @@ func (lst *Node) Print() {
 
 	p := lst
 
-	for ; p.next != lst; p = p.next {
-		fmt.Printf("data=%d \n", p.data)
+	for ; p.Next != lst; p = p.Next {
+		fmt.Printf("Data=%d \n", p.Data)
 	}
-	fmt.Printf("data=%d \n", p.data)
+	fmt.Printf("Data=%d \n", p.Data)
 
 	fmt.Printf("end \n")
 }
 
 func (lst *Node) PrintRec(sentinel *Node) {
-	if lst.next != sentinel {
-		fmt.Printf("data = %d\n", lst.data)
-		lst.next.PrintRec(sentinel)
+	if lst.Next != sentinel {
+		fmt.Printf("Data = %d\n", lst.Data)
+		lst.Next.PrintRec(sentinel)
 	} else {
-		fmt.Printf("data = %d\n", lst.data)
+		fmt.Printf("Data = %d\n", lst.Data)
 	}
 }
 
 func (lst *Node) PrintRecInv(sentinel *Node) {
-	if lst.next != sentinel {
-		lst.next.PrintRecInv(sentinel)
-		fmt.Printf("data = %d\n", lst.data)
+	if lst.Next != sentinel {
+		lst.Next.PrintRecInv(sentinel)
+		fmt.Printf("Data = %d\n", lst.Data)
 	} else {
-		fmt.Printf("data = %d\n", lst.data)
+		fmt.Printf("Data = %d\n", lst.Data)
 	}
 }

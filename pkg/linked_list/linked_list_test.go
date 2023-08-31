@@ -17,12 +17,12 @@ func TestAdd(t *testing.T) {
 	lst = lst.Insert(5)
 	lst = lst.Insert(10)
 
-	if lst.data != 10 {
-		t.Errorf("Add test failed got %d, wanted %d", lst.data, 10)
+	if lst.Data != 10 {
+		t.Errorf("Add test failed got %d, wanted %d", lst.Data, 10)
 	}
 
-	if lst.next.data != 5 {
-		t.Errorf("Add test failed got (next) %d, wanted %d", lst.next.data, 5)
+	if lst.Next.Data != 5 {
+		t.Errorf("Add test failed got (Next) %d, wanted %d", lst.Next.Data, 5)
 	}
 }
 
@@ -35,12 +35,12 @@ func TestRemove(t *testing.T) {
 
 	lst = lst.Remove(10)
 
-	if lst.data != 2 {
-		t.Errorf("Remove test failed expected head = %d, got %d", 2, lst.data)
+	if lst.Data != 2 {
+		t.Errorf("Remove test failed expected head = %d, got %d", 2, lst.Data)
 	}
 
-	if lst.next.data != 5 {
-		t.Errorf("Remove test failed expected next = %d, got %d", 5, lst.next.data)
+	if lst.Next.Data != 5 {
+		t.Errorf("Remove test failed expected Next = %d, got %d", 5, lst.Next.Data)
 	}
 }
 
@@ -53,12 +53,12 @@ func TestRemoveRec(t *testing.T) {
 
 	lst = lst.RemoveRec(10)
 
-	if lst.data != 2 {
-		t.Errorf("Remove test failed expected head = %d, got %d", 2, lst.data)
+	if lst.Data != 2 {
+		t.Errorf("Remove test failed expected head = %d, got %d", 2, lst.Data)
 	}
 
-	if lst.next.data != 5 {
-		t.Errorf("Remove test failed expected next = %d, got %d", 5, lst.next.data)
+	if lst.Next.Data != 5 {
+		t.Errorf("Remove test failed expected Next = %d, got %d", 5, lst.Next.Data)
 	}
 }
 
@@ -73,13 +73,13 @@ func TestFind(t *testing.T) {
 	node2 := lst.Find(40)
 	node3 := lst.Find(5)
 
-	if node1.data != 12 {
-		t.Errorf("Find test failed expected %d, got %d", 12, node1.data)
+	if node1.Data != 12 {
+		t.Errorf("Find test failed expected %d, got %d", 12, node1.Data)
 	}
-	if node2.data != 40 {
-		t.Errorf("Find test failed expected %d, got %d", 40, node2.data)
+	if node2.Data != 40 {
+		t.Errorf("Find test failed expected %d, got %d", 40, node2.Data)
 	}
-	if node3.data != 5 {
-		t.Errorf("Find test failed expected %d, got %d", 5, node3.data)
+	if node3.Data != 5 {
+		t.Errorf("Find test failed expected %d, got %d", 5, node3.Data)
 	}
 }

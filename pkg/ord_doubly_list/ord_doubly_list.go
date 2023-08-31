@@ -5,9 +5,9 @@ import (
 )
 
 type Node struct {
-	data     int
-	next     *Node
-	previous *Node
+	Data     int
+	Next     *Node
+	Previous *Node
 }
 
 func NewList() *Node {
@@ -16,8 +16,8 @@ func NewList() *Node {
 
 func AreEqual(lst1 *Node, lst2 *Node) bool {
 	a, b := lst1, lst2
-	for ; a != nil && b != nil; a, b = a.next, b.next {
-		if a.data != b.data {
+	for ; a != nil && b != nil; a, b = a.Next, b.Next {
+		if a.Data != b.Data {
 			return false
 		}
 	}
@@ -31,29 +31,39 @@ func AreEqualRec(lst1 *Node, lst2 *Node) bool {
 	} else if lst1 == nil || lst2 == nil {
 		return false
 	} else {
-		return (lst1.data == lst2.data) && AreEqualRec(lst1.next, lst2.next)
+		return (lst1.Data == lst2.Data) && AreEqualRec(lst1.Next, lst2.Next)
 	}
 }
 
 func (lst *Node) Insert(value int) *Node {
-	node := &Node{data: value}
+	node := &Node{Data: value}
 
 	var previous *Node
 
 	p := lst
 
-	for ; p != nil && p.data < value; p = p.next {
+	if lst == nil {
+		return node
+	}
+
+	for ; p != nil && p.Data < value; p = p.Next {
 		previous = p
 	}
 
 	if previous == nil {
-		node.next = p
+		node.Next = p
+		p.Previous = node
+
 		lst = node
 	} else {
-		previous.next = node
+		previous.Next = node
 
-		node.previous = previous
-		node.next = p
+		node.Previous = previous
+		node.Next = p
+
+		if p != nil {
+			p.Previous = node
+		}
 	}
 
 	return lst
@@ -64,8 +74,8 @@ func (lst *Node) IsEmpty() bool {
 }
 
 func (lst *Node) Find(value int) *Node {
-	for p := lst; p != nil; p = p.next {
-		if p.data == value {
+	for p := lst; p != nil; p = p.Next {
+		if p.Data == value {
 			return p
 		}
 	}
@@ -78,9 +88,15 @@ func Free(lst **Node) {
 		return
 	}
 
-	Free(&(*lst).next)
-	(*lst).next = nil
-	(*lst).previous = nil
+	for p := *lst; p != nil; {
+		temp := p.Next
+
+		p.Next = nil
+		p.Previous = nil
+
+		p = temp
+	}
+
 	*lst = nil
 }
 
@@ -91,15 +107,17 @@ func (lst *Node) Remove(value int) *Node {
 		return lst
 	}
 
+	// if it's the first element
 	if lst == p {
-		lst = p.next
-		lst.previous = nil
-	} else {
-		p.previous.next = p.next
+		lst = p.Next
+		lst.Previous = nil
+	} else { // if not the first
+		p.Previous.Next = p.Next
 	}
 
-	if p.next != nil {
-		p.next.previous = p.previous
+	// if not the last element
+	if p.Next != nil {
+		p.Next.Previous = p.Previous
 	}
 
 	p = nil
@@ -109,19 +127,19 @@ func (lst *Node) Remove(value int) *Node {
 
 func (lst *Node) RemoveRec(value int) *Node {
 	if !lst.IsEmpty() {
-		if lst.data == value {
-			if lst.previous == nil {
-				lst = lst.next
-				lst.previous = nil
+		if lst.Data == value {
+			if lst.Previous == nil {
+				lst = lst.Next
+				lst.Previous = nil
 			} else {
-				lst.previous.next = lst.next
+				lst.Previous.Next = lst.Next
 			}
 
-			if lst.next != nil {
-				lst.next.previous = lst.previous
+			if lst.Next != nil {
+				lst.Next.Previous = lst.Previous
 			}
 		} else {
-			lst.next.RemoveRec(value)
+			lst.Next.RemoveRec(value)
 		}
 	}
 
@@ -131,8 +149,8 @@ func (lst *Node) RemoveRec(value int) *Node {
 func (lst *Node) Print() {
 	fmt.Printf("start \n")
 
-	for p := lst; p != nil; p = p.next {
-		fmt.Printf("data=%d \n", p.data)
+	for p := lst; p != nil; p = p.Next {
+		fmt.Printf("Data=%d \n", p.Data)
 	}
 
 	fmt.Printf("end \n")
@@ -140,14 +158,14 @@ func (lst *Node) Print() {
 
 func (lst *Node) PrintRec() {
 	if lst != nil {
-		fmt.Printf("data = %d\n", lst.data)
-		lst.next.PrintRec()
+		fmt.Printf("Data = %d\n", lst.Data)
+		lst.Next.PrintRec()
 	}
 }
 
 func (lst *Node) PrintRecInv() {
 	if lst != nil {
-		lst.next.PrintRecInv()
-		fmt.Printf("data = %d\n", lst.data)
+		lst.Next.PrintRecInv()
+		fmt.Printf("Data = %d\n", lst.Data)
 	}
 }
