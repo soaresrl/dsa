@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/soaresrl/dsa/pkg/static_hash"
 )
 
@@ -14,6 +15,12 @@ func main() {
 	hash.Print()
 
 	hash.Remove(5)
+	
+	fmt.Println()
+
+	fmt.Println("After removing from key 5")
+
+	fmt.Println()
 
 	hash.Print()
 
