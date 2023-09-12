@@ -34,6 +34,10 @@ func (h *HashTable) Get(key int) *linked_list.Node {
 
 	node := h.Items[pos].Find(key)
 
+	if node == nil {
+		return nil
+	}
+
 	return node
 }
 
