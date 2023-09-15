@@ -129,7 +129,13 @@ func (h *HashTable) Get(key int) int {
 func (h *HashTable) Remove(key int) {
 	pos := hashfunction(key, h.GlobalDepth)
 
-	h.Buckets[pos].Remove(key)
+	status := h.Buckets[pos].Remove(key)
+
+	if status == -1 {
+		return
+	}
+
+
 }
 
 //func Free(h **HashTable) {
