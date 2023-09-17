@@ -24,7 +24,7 @@ func hashfunction(key, depth int) int {
 func NewHashTable(bucketSize int) *HashTable {
 	var buckets []*Bucket
 
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 2; i++ {
 		bucket := Bucket{
 			LocalDepth: 1,		
 			Size: bucketSize,
@@ -35,7 +35,7 @@ func NewHashTable(bucketSize int) *HashTable {
 	}
 
 	table := HashTable{
-		GlobalDepth: 0,
+		GlobalDepth: 1,
 		BucketSize: bucketSize,
 		Buckets: buckets,
 	}
@@ -80,7 +80,7 @@ func (h *HashTable) Insert(value int) {
 			h.Buckets[bucketID] = &bucket
 		} else { // case 3 bucket is complete and has one reference
 			h.GlobalDepth++
-			
+			h.Buckets[bucketID].LocalDepth++
 			temp := make([]int, len(h.Buckets[bucketID].Items))
 
 			copy(temp, h.Buckets[bucketID].Items)
@@ -135,7 +135,41 @@ func (h *HashTable) Remove(key int) {
 		return
 	}
 
+	// 1. Try to merge two buckets
+	// search for pair bucket
+	pairID := pos ^ (1 << (h.GlobalDepth - 1))
+	
+	// if the two entries on address list 
+        // don't point to the same bucket
+	if h.Buckets[pos] != h.Buckets[pairID] {
+		// see if the current size of two buckets 
+		// don't exceeds the capacity of one bucket
+		size := len(h.Buckets[pos].Items) + len(h.Buckets[pairID].Items)
 
+		if size <= h.BucketSize {
+			h.Buckets[pairID].Items = append(h.Buckets[pairID].Items, h.Buckets[pos].Items...)
+
+			h.Buckets[pos] = h.Buckets[pairID]
+			h.Buckets[pos].LocalDepth--
+		}
+	}
+	// end of 1.
+
+	// 2. Shrink the addresses list if needed
+	count := 0
+	for _, b := range h.Buckets {
+		if h.GlobalDepth - b.LocalDepth == 1 {
+			count++
+		}
+	}
+
+	if count == len(h.Buckets) {
+		h.GlobalDepth--
+		h.Buckets = h.Buckets[0:1<<h.GlobalDepth]
+	}
+
+
+	// end of 2.
 }
 
 //func Free(h **HashTable) {
@@ -147,6 +181,7 @@ func (h *HashTable) Remove(key int) {
 //}
 
 func (h *HashTable) Print() {
+	fmt.Println("Hash Global Depth: ", h.GlobalDepth)
 	for i, v := range h.Buckets {
 		fmt.Printf("Bucket index: %d \n", i)
 		v.Print()
@@ -191,6 +226,7 @@ func (b *Bucket) Remove(key int) int {
 
 func (b *Bucket) Print() {
 	fmt.Printf("Address %p\n", b)
+	fmt.Printf("Local Depth: %d\n", b.LocalDepth)
 
 	for _, v := range b.Items {
 		n := int64(v)
