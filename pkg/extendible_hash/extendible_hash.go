@@ -120,7 +120,9 @@ func (h *HashTable) Get(key int) int {
 	pos := hashfunction(key, h.GlobalDepth)
 
 	for _, v := range h.Buckets[pos].Items {
-		return v
+		if v == key {
+			return v
+		}
 	}
 
 	return -1
@@ -172,13 +174,11 @@ func (h *HashTable) Remove(key int) {
 	// end of 2.
 }
 
-//func Free(h **HashTable) {
-//	for _, v := range (*h).Items {
-//		linked_list.Free(&v)
-//	}
-//
-//	*h = nil
-//}
+func Free(h **HashTable) {
+	(*h).Buckets = nil
+
+	*h = nil
+}
 
 func (h *HashTable) Print() {
 	fmt.Println("Hash Global Depth: ", h.GlobalDepth)
