@@ -19,6 +19,11 @@ func main() {
 	el9 := p.MakeSet(9)
 	el10 := p.MakeSet(10)
 
+	fmt.Println("Make singleton sets for 1 to 10")
+	fmt.Println("Apply Union for 1, 2, 3")
+	fmt.Println("Apply Union for 4, 5, 6")
+	fmt.Println("Apply Union for 7, 9, 10, 8")
+
 	p.Union(el1, el2)
 	p.Union(el1, el3)
 	p.Union(el4, el5)
@@ -29,9 +34,9 @@ func main() {
 
 	el := p.FindSet(el8)
 
-	fmt.Printf("%d\n", el.Data)
-	fmt.Printf("Same set: %v\n", p.SameSet(el7, el10))
-	fmt.Printf("Same set: %v\n", p.SameSet(el1, el10))
+	fmt.Printf("Recovering Rep for %d, Rep = %d\n", el8.Data, el.Data)
+	fmt.Printf("7 is on same set as 10: %v\n", p.SameSet(el7, el10))
+	fmt.Printf("1 is on Same set as 10: %v\n", p.SameSet(el1, el10))
 
 	partition.Free(&p)
 }
