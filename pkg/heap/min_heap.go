@@ -95,8 +95,62 @@ func (h *MinHeap) FixBelow() {
 	}
 }
 
+func (h *MinHeap) FindNode(a float32) (bool, int) {
+	for i := 0; i < h.Pos; i++ {
+		if a == h.Priority[i] {
+			return true, i
+		}
+	}
+
+	return false, -1
+}
+
+func (h *MinHeap) ChangePriority(index int, value float32) {
+	old := h.Priority[index]
+
+	h.Priority[index] = value
+	
+	if value > old {
+		h.MinHeapify(index)
+	} else {
+		h.FixAbove(index)
+	}
+}
+
+func (h *MinHeap) MinHeapify(i int) {
+	l := 2*i + 1
+	r := 2*i + 2
+
+	smallest := 0
+
+	if l < h.Pos && h.Priority[l] < h.Priority[i] {
+		smallest = l
+	} else {
+		smallest = i
+	}
+
+	if r < h.Pos && h.Priority[r] < h.Priority[smallest] {
+		smallest = r
+	}
+
+	if smallest != i {
+		temp := h.Priority[i]
+		h.Priority[i] = h.Priority[smallest]
+		h.Priority[smallest] = temp
+
+		h.MinHeapify(smallest)
+	}
+}
+
 func (h *MinHeap) Print() {
 	for i := 0; i < h.Pos; i++ {
 		fmt.Printf("%v\n", h.Priority[i])
 	}
+}
+
+func FreeMinHeap(h **MinHeap) {
+	(*h).Pos = 0
+	(*h).Priority = nil
+
+	h = nil
 }

@@ -27,10 +27,11 @@ func main() {
 	p.Union(el7, el10)
 	p.Union(el7, el8)
 
-
 	el := p.FindSet(el8)
 
 	fmt.Printf("%d\n", el.Data)
 	fmt.Printf("Same set: %v\n", p.SameSet(el7, el10))
 	fmt.Printf("Same set: %v\n", p.SameSet(el1, el10))
+
+	partition.Free(&p)
 }

@@ -95,8 +95,62 @@ func (h *MaxHeap) FixBelow() {
 	}
 }
 
+func (h *MaxHeap) FindNode(a float32) (bool, int) {
+	for i := 0; i < h.Pos; i++ {
+		if a == h.Priority[i] {
+			return true, i
+		}
+	}
+
+	return false, -1
+}
+
+func (h *MaxHeap) ChangePriority(index int, value float32) {
+	old := h.Priority[index]
+
+	h.Priority[index] = value
+
+	if value > old {
+		h.FixAbove(index)
+	} else {
+		h.MaxHeapify(index)
+	}
+}
+
+func (h *MaxHeap) MaxHeapify(i int) {
+	l := 2*i + 1
+	r := 2*i + 2
+
+	largest := 0
+
+	if l < h.Pos && h.Priority[l] > h.Priority[i] {
+		largest = l
+	} else {
+		largest = i
+	}
+
+	if r < h.Pos && h.Priority[r] > h.Priority[largest] {
+		largest = r
+	}
+
+	if largest != i {
+		temp := h.Priority[i]
+		h.Priority[i] = h.Priority[largest]
+		h.Priority[largest] = temp
+
+		h.MaxHeapify(largest)
+	}
+}
+
 func (h *MaxHeap) Print() {
 	for i := 0; i < h.Pos; i++ {
 		fmt.Printf("%v\n", h.Priority[i])
 	}
+}
+
+func FreeMaxHeap(h **MaxHeap) {
+	(*h).Pos = 0
+	(*h).Priority = nil
+
+	h = nil
 }

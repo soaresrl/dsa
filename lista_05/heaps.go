@@ -19,6 +19,7 @@ func main() {
 	max_heap.Insert(90)
 	max_heap.Insert(50)
 
+	fmt.Println("-- Max heap priority array --")
 	max_heap.Print()
 	fmt.Println()
 
@@ -28,7 +29,19 @@ func main() {
 		fmt.Printf("removed = %v\n", value)
 	}
 
+	fmt.Println("-- Updated Max heap --")
+
+	max_heap.Print()
 	fmt.Println()
+
+	hasEl, indexEl := max_heap.FindNode(20)
+
+	if hasEl {
+		fmt.Println("Found node 20, changing its priority to 14")
+		max_heap.ChangePriority(indexEl, 14)
+	}
+
+	fmt.Println("-- Updated max heap --")
 
 	max_heap.Print()
 	fmt.Println()
@@ -46,6 +59,8 @@ func main() {
 	min_heap.Insert(90)
 	min_heap.Insert(50)
 
+	fmt.Println("-- Min heap priority array --")
+
 	min_heap.Print()
 	fmt.Println()
 
@@ -61,7 +76,26 @@ func main() {
 		fmt.Printf("removed = %v\n", value)
 	}
 
-	fmt.Println()
+	fmt.Println("-- Updated Min heap --")
 
 	min_heap.Print()
+	
+	fmt.Println()
+
+	hasEl, indexEl = min_heap.FindNode(40)
+
+	if hasEl {
+		fmt.Println("Found node 40, changing its priority to 9")
+
+		min_heap.ChangePriority(indexEl, 9)
+	}
+
+	fmt.Println("-- Updated Min heap --")
+
+	min_heap.Print()
+	
+	fmt.Println()
+
+	heap.FreeMaxHeap(&max_heap)
+	heap.FreeMinHeap(&min_heap)
 }
