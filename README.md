@@ -1,4 +1,4 @@
-# Lista 5, 6, 7 - Estruturas de Dados - Heap - Sets - Disjoint Sets
+# Lista 8 - Estruturas de Dados - Árvore de Busca Binária
 
 ## Árvore de arquivos
 
