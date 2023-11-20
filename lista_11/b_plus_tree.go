@@ -28,7 +28,9 @@ func main() {
 		fmt.Println("Not Found")
 	}
 
-	tree.Remove(4)
+	tree.Remove(7)
+	tree.Remove(6)
+	tree.Remove(5)
 
 	r = tree.Find(4)
 

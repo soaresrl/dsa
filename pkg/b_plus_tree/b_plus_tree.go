@@ -252,6 +252,10 @@ func (tree *BPTree) Insert(key int, data interface{}) {
 	}
 }
 
+func (tree *BPTree) updateParentKeys(node *Node, removedKey int) {
+
+}
+
 func (tree *BPTree) Remove(key int) {
 	data := tree.Find(key)
 
@@ -262,6 +266,25 @@ func (tree *BPTree) Remove(key int) {
 	leaf := tree.findLeaf(key)
 
 	leaf.remove(key)
+
+	if len(leaf.keys) >= (tree.order/2)-1 {
+		parent := leaf.parent
+
+		place := -1
+		for i, k := range parent.keys {
+			if k == key {
+				place = i
+				break
+			}
+		}
+
+		if place == -1 {
+			return
+		}
+
+		parent.keys[place] = leaf.keys[len(leaf.keys)-1]
+		return
+	}
 
 	// The node has less elements than the minimum allowed
 	// for the tree's order
@@ -301,11 +324,26 @@ func (tree *BPTree) Remove(key int) {
 			leaf.pointers = tempPointers
 
 			// delete key from sibling
-			leftNode.keys = leftNode.keys[:len(leftNode.keys)-2]
-			leftNode.pointers = leftNode.pointers[:len(leftNode.pointers)-2]
+			leftNode.keys = leftNode.keys[:len(leftNode.keys)-1]
+			leftNode.pointers = leftNode.pointers[:len(leftNode.pointers)-1]
 
 			// update parent
-			leaf.parent.keys[0] = leftNode.keys[len(leftNode.keys)-1]
+			// update parent
+			parent := leaf.parent
+
+			place := -1
+			for i, k := range parent.keys {
+				if k == key {
+					place = i
+					break
+				}
+			}
+
+			if place == -1 {
+				return
+			}
+
+			leaf.parent.keys[place-1] = leftNode.keys[len(leftNode.keys)-1]
 		} else if rightNode != nil && len(rightNode.keys) > (tree.order/2)-1 {
 			leaf.keys = append(leaf.keys, rightNode.keys[0])
 			leaf.pointers = append(leaf.pointers, rightNode.pointers[0])
@@ -315,7 +353,21 @@ func (tree *BPTree) Remove(key int) {
 			rightNode.pointers = rightNode.pointers[1:]
 
 			// update parent
-			leaf.parent.keys[len(leaf.parent.keys)-1] = leaf.keys[len(leaf.keys)-1]
+			parent := leaf.parent
+
+			place := -1
+			for i, k := range parent.keys {
+				if k == key {
+					place = i
+					break
+				}
+			}
+
+			if place == -1 {
+				return
+			}
+
+			parent.keys[place] = leaf.keys[len(leaf.keys)-1]
 		} else { // merge two nodes
 			if leftNode != nil && len(leftNode.keys) < tree.order-1 {
 				leftNode.keys = append(leftNode.keys, leaf.keys...)
@@ -331,6 +383,8 @@ func (tree *BPTree) Remove(key int) {
 
 				leaf.parent.keys = tempKeys
 				leaf.parent.pointers = tempPointers
+
+				leaf.parent.keys[0] = leftNode.keys[len(leftNode.keys)-1]
 			} else if rightNode != nil && len(rightNode.keys) < tree.order-1 {
 				leaf.keys = append(leaf.keys, rightNode.keys...)
 				leaf.pointers = append(leaf.pointers, rightNode.pointers...)
